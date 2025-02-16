@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 import argparse
+import os
+import re
+import sys
+from urllib.parse import urljoin, urlparse
+
 import requests
 from bs4 import BeautifulSoup, Comment
 
@@ -58,9 +63,61 @@ def find_videos(soup):
     return videos
 
 
+def matches_regex(path, regex_pattern):
+    """
+    Check if path matches the regex pattern
+    Returns True if:
+    - regex_pattern is None (no filtering requested)
+    - or if path matches the regex pattern
+    """
+    if regex_pattern is None:
+        return True
+
+    try:
+        return bool(re.search(regex_pattern, path))
+    except re.error as e:
+        print(f"Invalid regex pattern: {e}", file=sys.stderr)
+        return False
+
+
+def get_absolute_url(base_url, relative_url):
+    """Convert relative URL to absolute URL."""
+    # Return the relative URL if it's already absolute
+    if bool(urlparse(relative_url).netloc):
+        return relative_url
+    # Otherwise, join the base URL with the relative URL
+    return urljoin(base_url, relative_url)
+
+
+def download_media(url, output_path):
+    """Download media from url to output_path and return the local filename."""
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+
+        # Get the filename from the URL
+        filename = os.path.basename(urlparse(url).path)
+        if not filename:  # Handle case where URL doesn't end with filename
+            filename = 'unnamed_file'
+
+        # Create output directory if it doesn't exist
+        os.makedirs(output_path, exist_ok=True)
+
+        # Save the file
+        local_path = os.path.join(output_path, filename)
+        with open(local_path, 'wb') as f:
+            f.write(response.content)
+
+    except Exception as e:
+        print(f"Error downloading {url}: {e}", file=sys.stderr)
+
+
 def main():
     # Create parser with descriptive help message
-    parser = argparse.ArgumentParser(description='Extract media resources from a webpage')
+    parser = argparse.ArgumentParser(
+        description='Extract media resources from a webpage\nWritten by Nathan Razafindrakoto 20254813 and Yasmine Ben Youssef 20237210',
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
 
     # Add all required arguments and options
     parser.add_argument('url', help='URL of the webpage to analyze')
@@ -77,15 +134,34 @@ def main():
 
     print("PATH " + args.url.strip())
 
-    # Find and print images if not disabled
-    if not args.i:
-        for image_text in find_images(soup):
-            print(image_text)
+    images = None
+    videos = None
 
-    # Find and print videos if not disabled
+    # Compile regex pattern if provided
+    regex = re.compile(args.r) if args.r else None
+
+    # Find images if not disabled
+    if not args.i:
+        images = find_images(soup)
+        images = [image for image in images if matches_regex(image.split()[1], regex)]
+
+    # Find videos if not disabled
     if not args.v:
-        for video_text in find_videos(soup):
-            print(video_text)
+        videos = find_videos(soup)
+        videos = [video for video in videos if matches_regex(video.split()[1], regex)]
+
+    # Download medias if output path is provided
+    if args.p:
+        for media_text in (images or []) + (videos or []):
+            media_url = media_text.split()[1]
+            download_media(get_absolute_url(args.url, media_url), args.p)
+
+
+    # Print images and videos
+    for image in images:
+        print(image)
+    for video in videos:
+        print(video)
 
 
 if __name__ == '__main__':
