@@ -53,8 +53,7 @@ def create_resource_tr(resource):
     """
 
 def generate_html(resources):
-    html = """
-    <!DOCTYPE html>
+    html = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Visualisateur d'images/vidéos</title>
@@ -74,7 +73,7 @@ def generate_html(resources):
     <h2 class="text-center fs-5">d'images/vidéos</h2>
 
     <div class="container content m-5">
-        <table id="resource-table" class="table table-striped mx-auto">
+        <table id="resource-table" class="table table-striped table-hover mx-auto">
             <colgroup>
                 <col>
                 <col>
@@ -107,6 +106,7 @@ def generate_html(resources):
         </div>
     </div>
 
+    <div class="image-popup"></div>
 
     <!-- Bootstrap script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
