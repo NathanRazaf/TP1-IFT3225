@@ -1,0 +1,41 @@
+#resource-table {
+    table-layout: fixed;
+}
+
+#resource-table colgroup col:first-child {
+    width: 60%;
+}
+
+#resource-table colgroup col:last-child {
+    width: 40%;
+}
+
+.resource-row td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 0;
+}
+
+.resource-row:hover {
+    background-color: #000000;
+    cursor: pointer;
+}
+
+.image-popup {
+    position: fixed;
+    display: none;
+    z-index: 1000;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    transition: left 0.1s, top 0.1s; /* Smooth position transitions */
+}
+
+.image-popup img, .image-popup video {
+    max-width: 300px;
+    max-height: 300px;
+    object-fit: contain;
+    display: block; /* Prevents unwanted spacing */
+}

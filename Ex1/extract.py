@@ -132,7 +132,8 @@ def main():
     response = requests.get(args.url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    print("PATH " + args.url.strip())
+    # Print the URL to stdout
+    sys.stdout.write(f"PATH {args.url.strip()}\n")
 
     images = None
     videos = None
@@ -157,12 +158,14 @@ def main():
             download_media(get_absolute_url(args.url, media_url), args.p)
 
 
-    # Print images and videos
+    # Print images and videos to stdout
     for image in images:
-        print(image)
+        sys.stdout.write(f"{image}\n")
     for video in videos:
-        print(video)
+        sys.stdout.write(f"{video}\n")
 
+    # Flush stdout to ensure output is sent to the next program in the pipeline
+    sys.stdout.flush()
 
 if __name__ == '__main__':
     main()
