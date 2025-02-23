@@ -2,6 +2,7 @@ const resources = [];
 let content;
 
 const loadResources = () => {
+    // Load the resources from the table into the resources array
     const resource_rows = document.querySelectorAll('.resource-row');
 
     resource_rows.forEach(row => {
@@ -115,7 +116,8 @@ const recreateResourcesTable = () => {
 
     resources.forEach(resource => {
         html += '' +
-            '                <tr class="resource-row" data-full-url="' + resource.fullImageUrl + '" data-type="' + resource.type + '">\n' +
+            '                <tr class="resource-row" data-full-url="' + resource.fullImageUrl +
+                                                        '" data-type="' + resource.type + '">\n' +
             '                    <td>' + resource.imageUrl + '</td>\n' +
             '                    <td>' + resource.altText + '</td>\n' +
             '                </tr>';
@@ -156,9 +158,9 @@ const createCarrousel = () => {
         html += `<div class="carousel-item ${activeClass}">\n`;
 
         if (resource.type === 'IMAGE') {
-            html += `<img src="${resource.fullImageUrl}" class="d-block w-100" alt="${resource.altText}">\n`;
+            html += `<img src="${resource.fullImageUrl}" class="carousel-resource" alt="${resource.altText}">\n`;
         } else if (resource.type === 'VIDEO') {
-            html += `<video src="${resource.fullImageUrl}" class="d-block w-100" controls></video>\n`;
+            html += `<video src="${resource.fullImageUrl}" class="carousel-resource" controls></video>\n`;
         }
 
         html += '</div>\n';
@@ -168,11 +170,13 @@ const createCarrousel = () => {
 
     // Add carousel controls
     html +=
-        '<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">\n' +
+        '<button ' +
+        '   class="carousel-control-prev" type="button" data-bs-target="#resource-carousel" data-bs-slide="prev">\n' +
         '    <span class="carousel-control-prev-icon" aria-hidden="true"></span>\n' +
         '    <span class="visually-hidden">Previous</span>\n' +
         '</button>\n' +
-        '<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">\n' +
+        '<button ' +
+        '   class="carousel-control-next" type="button" data-bs-target="#resource-carousel" data-bs-slide="next">\n' +
         '    <span class="carousel-control-next-icon" aria-hidden="true"></span>\n' +
         '    <span class="visually-hidden">Next</span>\n' +
         '</button>\n' +
@@ -201,13 +205,20 @@ const createGalerie = () => {
 
     // Create gallery grid
     resources.forEach(resource => {
-        html += '<div class="col-md-4 mb-4">\n<div class="card">\n';
+        html += '<div class="col-md-6 mb-4">\n<div class="card">\n';
+
+        html += '<div class="card-img-wrapper custom-card-image-wrapper">\n';
 
         if (resource.type === 'IMAGE') {
-            html += `<img src="${resource.fullImageUrl}" class="card-img-top" alt="${resource.altText}">\n`;
+
+            html += `<img src="${resource.fullImageUrl}" 
+                    class="card-img-top resource-galery-item" alt="${resource.altText}">\n`;
         } else if (resource.type === 'VIDEO') {
-            html += `<video src="${resource.fullImageUrl}" class="card-img-top" controls></video>\n`;
+            html += `<video src="${resource.fullImageUrl}" 
+                    class="card-img-top resource-galery-item" controls></video>\n`;
         }
+
+        html += '</div>\n';
 
         html +=
             `<div class="card-body">\n` +
@@ -237,7 +248,7 @@ const createGalerie = () => {
 window.onload = function() {
     content = document.querySelector('.content');
 
-    loadResources();
+    loadResources(); // Load the resources upon page load to keep the table in memory
     addTableResourcesListener();
     addDisplayButtonsListener();
 };

@@ -13,6 +13,7 @@ def get_absolute_url(base_url, relative_url):
 
 
 def get_resources_from_input():
+    """Get the resources from the input."""
     lines = []
     try:
         # Read input line by line from stdin
@@ -53,6 +54,7 @@ def create_resource_tr(resource):
     """
 
 def generate_html(resources):
+    """Generate the HTML content based on the resources."""
     html = """<!DOCTYPE html>
 <html lang="en">
 <head>
