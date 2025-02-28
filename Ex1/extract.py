@@ -14,7 +14,7 @@ def get_media_text(media_type, src, alt):
     text = f"{media_type} "
     if src is not None:
         text += src
-    if alt is not None:
+    if alt is not None and alt != "":
         text += f' "{alt}"'
     return text
 

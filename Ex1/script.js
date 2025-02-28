@@ -20,12 +20,10 @@ const addDisplayButtonsListener = () => {
     const galerieButton = document.querySelector('#galerie');
 
     carrouselButton.addEventListener('click', function() {
-        console.log('Carrousel button clicked');
         createCarrousel();
     });
 
     galerieButton.addEventListener('click', function() {
-        console.log('Galerie button clicked');
         createGalerie();
     });
 }
@@ -61,21 +59,10 @@ const addTableResourcesListener = () => {
 
             // Calculate positions
             const popupHeight = popup.offsetHeight;
-            const popupWidth = popup.offsetWidth;
-            const windowHeight = window.innerHeight;
-            const windowWidth = window.innerWidth;
 
-            // Calculate left position
-            let leftPos = e.pageX + 10;
-            if (leftPos + popupWidth > windowWidth) {
-                leftPos = windowWidth - popupWidth - 10;
-            }
-
-            // Calculate top position
-            let topPos = e.pageY + 10;
-            if (topPos + popupHeight > windowHeight) {
-                topPos = e.pageY - popupHeight - 10; // Show above cursor if not enough space below
-            }
+            // Always position above cursor
+            const leftPos = e.pageX + 10;
+            const topPos = e.pageY - popupHeight - 10;
 
             // Apply calculated positions
             popup.style.left = `${leftPos}px`;
