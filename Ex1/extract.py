@@ -113,13 +113,11 @@ def download_media(url, output_path):
 
 
 def main():
-    # Create parser with descriptive help message
     parser = argparse.ArgumentParser(
         description='Extract media resources from a webpage\nWritten by Nathan Razafindrakoto 20254813 and Yasmine Ben Youssef 20237210',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
 
-    # Add all required arguments and options
     parser.add_argument('url', help='URL of the webpage to analyze')
     parser.add_argument('-r', help='only list resources matching this regex pattern')
     parser.add_argument('-i', action='store_true', help='do not list images')

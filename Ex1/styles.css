@@ -91,12 +91,12 @@
     background: white;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    transition: left 0.1s, top 0.1s; /* Smooth position transitions */
+    transition: left 0.1s, top 0.1s;
 }
 
 .image-popup img, .image-popup video {
     max-width: 300px;
     max-height: 300px;
     object-fit: contain;
-    display: block; /* Prevents unwanted spacing */
+    display: block;
 }
